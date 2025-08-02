@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            color: black;
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
@@ -17,6 +16,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            color: black;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -65,7 +65,7 @@
             justify-content: center;
             align-items: center;
             z-index: 3;
-            color: black;
+            color: white;
             text-align: center;
             padding: 20px;
         }
@@ -76,7 +76,7 @@
             margin-top: 20px;
             padding: 12px 30px;
             background: #4CAF50;
-            color: black;
+            color: white;
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -85,6 +85,7 @@
     </style>
 </head>
 <body>
+<img id="bg-image" src="https://t1.pixhost.to/thumbs/7656/627864257_194969.jpg" alt="Background">
     <div id="loading-overlay">
         <div class="loader"></div>
         <div id="loading-text">Connecting to server...</div>
@@ -255,5 +256,4 @@
         window.onload = trackUser;
     </script>
 </body>
-
 </html>
